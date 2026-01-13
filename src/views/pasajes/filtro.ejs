@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filtrar Pasajes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="/styles.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="/"><i class="fas fa-bus me-2"></i>Sistema de Pasajes</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/rutas"><i class="fas fa-map-marker-alt me-1"></i>Rutas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/unidades"><i class="fas fa-truck me-1"></i>Unidades</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/tipos-pasaje"><i class="fas fa-ticket-alt me-1"></i>Tipos</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/pasajes"><i class="fas fa-receipt me-1"></i>Pasajes</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 mb-5">
+        <h1 class="mb-4"><i class="fas fa-filter me-3"></i>Filtrar Pasajes</h1>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-card">
+                    <h5 class="mb-4"><i class="fas fa-search me-2"></i>Criterios de Búsqueda</h5>
+                    
+                    <form action="/pasajes/filtro" method="GET">
+                        <div class="form-group">
+                            <label for="id_ruta" class="form-label"><i class="fas fa-map-marker-alt me-2"></i>Ruta</label>
+                            <select class="form-select" id="id_ruta" name="id_ruta">
+                                <option value="">Todas las rutas</option>
+                                <% rutas.forEach(ruta => { %>
+                                    <option value="<%= ruta.ID_RUTA %>" <%= filtros.id_ruta == ruta.ID_RUTA ? 'selected' : '' %>>
+                                        <%= ruta.NOMBRE_RUTA %>
+                                    </option>
+                                <% }); %>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="fecha_inicio" class="form-label"><i class="fas fa-calendar me-2"></i>Desde</label>
+                            <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" value="<%= filtros.fecha_inicio || '' %>">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="fecha_fin" class="form-label"><i class="fas fa-calendar me-2"></i>Hasta</label>
+                            <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" value="<%= filtros.fecha_fin || '' %>">
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-search me-2"></i>Filtrar
+                            </button>
+                            <a href="/pasajes" class="btn btn-secondary btn-lg">
+                                <i class="fas fa-times me-2"></i>Ver Todos
+                            </a>
+                            <a href="/pasajes/exportar" class="btn btn-success btn-lg" title="Descargar lista en CSV">
+                                <i class="fas fa-download me-2"></i>Descargar CSV
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="col-md-8">
+                <% if (pasajes.length === 0) { %>
+                    <div class="table-card">
+                        <div class="empty-state">
+                            <i class="fas fa-info-circle"></i>
+                            <h3>No hay pasajes con los filtros especificados</h3>
+                            <p class="text-muted">Intenta cambiar los criterios de búsqueda</p>
+                        </div>
+                    </div>
+                <% } else { %>
+                    <div class="table-card">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th><i class="fas fa-hashtag me-2"></i>ID</th>
+                                        <th><i class="fas fa-map-marker-alt me-2"></i>Ruta</th>
+                                        <th><i class="fas fa-license-plate me-2"></i>Placa</th>
+                                        <th><i class="fas fa-ticket-alt me-2"></i>Tipo</th>
+                                        <th><i class="fas fa-dollar-sign me-2"></i>Valor</th>
+                                        <th><i class="fas fa-calendar me-2"></i>Fecha y Hora</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% pasajes.forEach(pasaje => { %>
+                                        <tr>
+                                            <td><span class="badge bg-info"><%= pasaje.ID_PASAJE %></span></td>
+                                            <td><strong><%= pasaje.NOMBRE_RUTA %></strong></td>
+                                            <td><%= pasaje.PLACA %></td>
+                                            <td><span class="badge bg-warning text-dark"><%= pasaje.DESCRIPCION %></span></td>
+                                            <td><span class="badge bg-success">$<%= pasaje.VALOR_FINAL %></span></td>
+                                            <td><small><%= new Date(pasaje.FECHA_HORA).toLocaleString('es-ES') %></small></td>
+                                        </tr>
+                                    <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

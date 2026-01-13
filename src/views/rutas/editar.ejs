@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Ruta</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="/styles.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="/"><i class="fas fa-bus me-2"></i>Sistema de Pasajes</a>
+        </div>
+    </nav>
+
+    <div class="container mt-5 mb-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="form-card">
+                    <h1><i class="fas fa-edit me-3"></i>Editar Ruta</h1>
+                    
+                    <form action="/rutas/actualizar/<%= ruta.ID_RUTA %>" method="POST">
+                        <div class="form-group">
+                            <label for="nombre_ruta" class="form-label"><i class="fas fa-heading me-2"></i>Nombre Ruta</label>
+                            <input type="text" class="form-control" id="nombre_ruta" name="nombre_ruta" value="<%= ruta.NOMBRE_RUTA %>" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="origen" class="form-label"><i class="fas fa-map-pin me-2"></i>Origen</label>
+                            <input type="text" class="form-control" id="origen" name="origen" value="<%= ruta.ORIGEN %>" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="destino" class="form-label"><i class="fas fa-map-pin me-2"></i>Destino</label>
+                            <input type="text" class="form-control" id="destino" name="destino" value="<%= ruta.DESTINO %>" required>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save me-2"></i>Actualizar Ruta
+                            </button>
+                            <a href="/rutas" class="btn btn-secondary btn-lg">
+                                <i class="fas fa-times me-2"></i>Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

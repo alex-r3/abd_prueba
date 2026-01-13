@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Pasajes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #6c757d;
+            --success-color: #198754;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #0dcaf0;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .navbar {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            background: linear-gradient(90deg, #0d6efd 0%, #0a58ca 100%) !important;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 0.5px;
+        }
+        .nav-link {
+            margin-left: 1rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        .nav-link:hover {
+            color: #fff !important;
+            transform: translateY(-2px);
+        }
+        .container-main {
+            margin-top: 3rem;
+            margin-bottom: 3rem;
+        }
+        .card {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            border: none;
+            transition: all 0.3s ease;
+            border-radius: 12px;
+        }
+        .card:hover {
+            box-shadow: 0 12px 32px rgba(0,0,0,0.18);
+            transform: translateY(-4px);
+        }
+        .hero {
+            background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+            color: white;
+            padding: 4rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+        .hero h1 {
+            font-weight: 800;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+        }
+        .hero .lead {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+        .menu-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            text-decoration: none;
+            color: #0d6efd;
+            transition: all 0.3s ease;
+            display: flex !important;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            min-height: 200px;
+            justify-content: center;
+        }
+        .menu-item:hover {
+            box-shadow: 0 8px 28px rgba(0,0,0,0.15);
+            transform: translateY(-8px);
+            color: #0a58ca;
+        }
+        .menu-item i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #0d6efd;
+        }
+        .menu-item h3 {
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        .menu-item p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="/"><i class="fas fa-bus me-2"></i>Sistema de Pasajes</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/rutas"><i class="fas fa-map-marker-alt me-1"></i>Rutas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/unidades"><i class="fas fa-truck me-1"></i>Unidades</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/tipos-pasaje"><i class="fas fa-ticket-alt me-1"></i>Tipos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/pasajes"><i class="fas fa-receipt me-1"></i>Pasajes</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container container-main">
+        <div class="hero mb-5">
+            <h1><i class="fas fa-bus me-3"></i>Sistema de Pasajes</h1>
+            <p class="lead mb-0">Gestiona rutas, unidades, tipos de pasaje y registros de viajes de forma segura y eficiente</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <a href="/rutas" class="menu-item">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <h3>Rutas</h3>
+                    <p>Gestionar rutas de transporte</p>
+                </a>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <a href="/unidades" class="menu-item">
+                    <i class="fas fa-bus"></i>
+                    <h3>Unidades</h3>
+                    <p>Gestionar unidades de transporte</p>
+                </a>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <a href="/tipos-pasaje" class="menu-item">
+                    <i class="fas fa-ticket-alt"></i>
+                    <h3>Tipos Pasaje</h3>
+                    <p>Gestionar tipos de pasaje</p>
+                </a>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <a href="/pasajes" class="menu-item">
+                    <i class="fas fa-receipt"></i>
+                    <h3>Pasajes</h3>
+                    <p>Registrar y consultar pasajes</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
