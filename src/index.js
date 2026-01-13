@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const { initializeConnection } = require("../config/db-connection");
 
