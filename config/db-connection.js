@@ -1,31 +1,32 @@
 const oracledb = require("oracledb");
 
-// Configuración básica
 oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT;
 
-// Configuración de conexión
 const dbConfig = {
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     connectString: process.env.DB_CONNECTION_STRING,
-    poolMin: 2,
-    poolMax: 5,
+    // IMPORTANTE: Estos parámetros evitan que Render/Google cierren la conexión
+    expireTime: 1,           // Envía un "latido" cada 1 min
+    connectTimeout: 60000,   // 60 segundos de espera para conectar
 };
 
-// Crear conexión única
 let connection;
 
 async function initializeConnection() {
     try {
+        // Si ya existe una conexión, no creamos otra (evita duplicados)
+        if (connection) return connection;
+
         connection = await oracledb.getConnection(dbConfig);
-        console.log("Conexión a la base de datos establecida exitosamente");
+        console.log("Conexión establecida exitosamente (Modo Thin)");
+        return connection;
     } catch (err) {
-        console.error("Error al conectar a la base de datos:", err);
+        console.error("Error al conectar a Oracle:", err);
         throw err;
     }
 }
 
-// Exportar la función para inicializar y la conexión
 module.exports = {
     initializeConnection,
     getConnection: () => connection,
