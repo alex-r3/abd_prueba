@@ -16,6 +16,7 @@ exports.listar = async (req, res) => {
             JOIN RUTAS r ON p.id_ruta = r.id_ruta
             JOIN UNIDADES u ON p.id_unidad = u.id_unidad
             JOIN TIPOS_PASAJE tp ON p.id_tipo = tp.id_tipo
+            WHERE p.activo = 1
             ORDER BY p.fecha_hora DESC
         `);
         res.render("pasajes/lista", { pasajes: result.rows });
@@ -28,9 +29,9 @@ exports.listar = async (req, res) => {
 exports.crear = async (req, res) => {
     try {
         const connection = getConnection();
-        const rutas = await connection.execute("SELECT * FROM RUTAS");
-        const unidades = await connection.execute("SELECT * FROM UNIDADES");
-        const tipos = await connection.execute("SELECT * FROM TIPOS_PASAJE");
+        const rutas = await connection.execute("SELECT * FROM RUTAS WHERE activo = 1");
+        const unidades = await connection.execute("SELECT * FROM UNIDADES WHERE activo = 1");
+        const tipos = await connection.execute("SELECT * FROM TIPOS_PASAJE WHERE activo = 1");
         
         res.render("pasajes/crear", { 
             rutas: rutas.rows, 
@@ -49,7 +50,7 @@ exports.guardar = async (req, res) => {
         const connection = getConnection();
         
         await connection.execute(
-            "INSERT INTO PASAJES (id_ruta, id_unidad, id_tipo, valor_final) VALUES (:id_ruta, :id_unidad, :id_tipo, :valor_final)",
+            "INSERT INTO PASAJES (id_ruta, id_unidad, id_tipo, valor_final, activo) VALUES (:id_ruta, :id_unidad, :id_tipo, :valor_final, 1)",
             [parseInt(id_ruta), parseInt(id_unidad), parseInt(id_tipo), parseFloat(valor_final)],
             { autoCommit: true }
         );
@@ -66,7 +67,7 @@ exports.editar = async (req, res) => {
         const { id } = req.params;
         const connection = getConnection();
         const pasaje = await connection.execute(
-            "SELECT * FROM PASAJES WHERE id_pasaje = :id",
+            "SELECT * FROM PASAJES WHERE id_pasaje = :id AND activo = 1",
             [id]
         );
         
@@ -74,9 +75,9 @@ exports.editar = async (req, res) => {
             return res.status(404).send("Pasaje no encontrado");
         }
         
-        const rutas = await connection.execute("SELECT * FROM RUTAS");
-        const unidades = await connection.execute("SELECT * FROM UNIDADES");
-        const tipos = await connection.execute("SELECT * FROM TIPOS_PASAJE");
+        const rutas = await connection.execute("SELECT * FROM RUTAS WHERE activo = 1");
+        const unidades = await connection.execute("SELECT * FROM UNIDADES WHERE activo = 1");
+        const tipos = await connection.execute("SELECT * FROM TIPOS_PASAJE WHERE activo = 1");
         
         res.render("pasajes/editar", { 
             pasaje: pasaje.rows[0],
@@ -115,7 +116,7 @@ exports.eliminar = async (req, res) => {
         const connection = getConnection();
         
         await connection.execute(
-            "DELETE FROM PASAJES WHERE id_pasaje = :id",
+            "UPDATE PASAJES SET activo = 0 WHERE id_pasaje = :id",
             [id],
             { autoCommit: true }
         );
@@ -144,7 +145,7 @@ exports.filtrar = async (req, res) => {
             JOIN RUTAS r ON p.id_ruta = r.id_ruta
             JOIN UNIDADES u ON p.id_unidad = u.id_unidad
             JOIN TIPOS_PASAJE tp ON p.id_tipo = tp.id_tipo
-            WHERE 1=1
+            WHERE p.activo = 1
         `;
         
         const params = [];
@@ -167,7 +168,7 @@ exports.filtrar = async (req, res) => {
         query += " ORDER BY p.fecha_hora DESC";
         
         const result = await connection.execute(query, params);
-        const rutas = await connection.execute("SELECT * FROM RUTAS");
+        const rutas = await connection.execute("SELECT * FROM RUTAS WHERE activo = 1");
         
         res.render("pasajes/filtro", { 
             pasajes: result.rows,

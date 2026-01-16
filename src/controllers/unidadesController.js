@@ -3,7 +3,7 @@ const { getConnection } = require("../../config/db-connection");
 exports.listar = async (req, res) => {
     try {
         const connection = getConnection();
-        const result = await connection.execute("SELECT * FROM UNIDADES ORDER BY id_unidad");
+        const result = await connection.execute("SELECT * FROM UNIDADES WHERE activo = 1 ORDER BY id_unidad");
         res.render("unidades/lista", { unidades: result.rows });
     } catch (err) {
         console.error(err);
@@ -21,7 +21,7 @@ exports.guardar = async (req, res) => {
         const connection = getConnection();
         
         await connection.execute(
-            "INSERT INTO UNIDADES (numero_disco, placa, capacidad) VALUES (:numero_disco, :placa, :capacidad)",
+            "INSERT INTO UNIDADES (numero_disco, placa, capacidad, activo) VALUES (:numero_disco, :placa, :capacidad, 1)",
             [numero_disco, placa, parseInt(capacidad)],
             { autoCommit: true }
         );
@@ -38,7 +38,7 @@ exports.editar = async (req, res) => {
         const { id } = req.params;
         const connection = getConnection();
         const result = await connection.execute(
-            "SELECT * FROM UNIDADES WHERE id_unidad = :id",
+            "SELECT * FROM UNIDADES WHERE id_unidad = :id AND activo = 1",
             [id]
         );
         
@@ -78,7 +78,7 @@ exports.eliminar = async (req, res) => {
         const connection = getConnection();
         
         await connection.execute(
-            "DELETE FROM UNIDADES WHERE id_unidad = :id",
+            "UPDATE UNIDADES SET activo = 0 WHERE id_unidad = :id",
             [id],
             { autoCommit: true }
         );

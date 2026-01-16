@@ -3,7 +3,7 @@ const { getConnection } = require("../../config/db-connection");
 exports.listar = async (req, res) => {
     try {
         const connection = getConnection();
-        const result = await connection.execute("SELECT * FROM TIPOS_PASAJE ORDER BY id_tipo");
+        const result = await connection.execute("SELECT * FROM TIPOS_PASAJE WHERE activo = 1 ORDER BY id_tipo");
         res.render("tiposPasaje/lista", { tipos: result.rows });
     } catch (err) {
         console.error(err);
@@ -21,7 +21,7 @@ exports.guardar = async (req, res) => {
         const connection = getConnection();
         
         await connection.execute(
-            "INSERT INTO TIPOS_PASAJE (descripcion, precio_base) VALUES (:descripcion, :precio_base)",
+            "INSERT INTO TIPOS_PASAJE (descripcion, precio_base, activo) VALUES (:descripcion, :precio_base, 1)",
             [descripcion, parseFloat(precio_base)],
             { autoCommit: true }
         );
@@ -38,7 +38,7 @@ exports.editar = async (req, res) => {
         const { id } = req.params;
         const connection = getConnection();
         const result = await connection.execute(
-            "SELECT * FROM TIPOS_PASAJE WHERE id_tipo = :id",
+            "SELECT * FROM TIPOS_PASAJE WHERE id_tipo = :id AND activo = 1",
             [id]
         );
         
@@ -78,7 +78,7 @@ exports.eliminar = async (req, res) => {
         const connection = getConnection();
         
         await connection.execute(
-            "DELETE FROM TIPOS_PASAJE WHERE id_tipo = :id",
+            "UPDATE TIPOS_PASAJE SET activo = 0 WHERE id_tipo = :id",
             [id],
             { autoCommit: true }
         );
