@@ -1,5 +1,4 @@
 const oracledb = require('oracledb');
-oracledb.thin = true; // <--- FORZA EL MODO THIN EXPLÍCITAMENTE
 require('dotenv').config();
 
 const dbConfig = {
