@@ -1,0 +1,99 @@
+<%- include('../layout', { body: `
+  <div class="bg-white p-6 rounded shadow">
+    <h2 class="text-xl font-semibold mb-4">Pasajes</h2>
+
+    <div class="mb-4 flex flex-col md:flex-row md:items-end gap-3 p-4 bg-gray-50 rounded border">
+      <div class="flex-1">
+        <label class="block text-sm font-medium mb-1">Ruta</label>
+        <select id="filtroRuta" class="w-full border rounded px-3 py-2">
+          <option value="">Todas Rutas</option>
+          ${rutas.map(r => `<option value="${r.CODIGO || r.codigo}" ${filters.ruta==(r.CODIGO||r.codigo)?'selected':''}>${r.ORIGEN||r.origen} - ${r.DESTINO||r.destino}</option>`).join('')}
+        </select>
+      </div>
+      <div class="flex-1">
+        <label class="block text-sm font-medium mb-1">Desde</label>
+        <input id="filtroStart" type="date" value="${filters.start||''}" class="w-full border rounded px-3 py-2" />
+      </div>
+      <div class="flex-1">
+        <label class="block text-sm font-medium mb-1">Hasta</label>
+        <input id="filtroEnd" type="date" value="${filters.end||''}" class="w-full border rounded px-3 py-2" />
+      </div>
+      <div class="flex gap-2">
+        <button onclick="applyFilter()" class="bg-blue-600 text-white px-4 py-2 rounded">Filtrar</button>
+        <button onclick="exportCSV()" class="bg-gray-800 text-white px-4 py-2 rounded">Exportar CSV</button>
+      </div>
+    </div>
+
+    <div class="mb-2">
+      <a href="/pasajes/new" class="inline-block bg-green-600 text-white px-4 py-2 rounded">Vender Pasaje</a>
+    </div>
+
+    ${dbDown ? `<div class="mb-4 p-3 bg-yellow-50 border-l-4 border-yellow-300 text-yellow-800">Base de datos no disponible — mostrando 0 registros.</div>` : ''}
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white">
+        <thead>
+          <tr>
+            <th class="px-4 py-2">ID</th>
+            <th class="px-4 py-2">Fecha</th>
+            <th class="px-4 py-2">Placa</th>
+            <th class="px-4 py-2">Ruta</th>
+            <th class="px-4 py-2">Base</th>
+            <th class="px-4 py-2">Descuento</th>
+            <th class="px-4 py-2">Tipo</th>
+            <th class="px-4 py-2">Final</th>
+            <th class="px-4 py-2">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${pasajes.length === 0 ? `
+            <tr><td class="px-4 py-6 text-center" colspan="9">No hay pasajes registrados para los filtros seleccionados.</td></tr>
+          ` : pasajes.map(p => `
+            <tr>
+              <td class="border px-4 py-2">${p.ID || p.id}</td>
+              <td class="border px-4 py-2">${p.FECHA || p.fecha}</td>
+              <td class="border px-4 py-2">${p.PLACA || p.placa}</td>
+              <td class="border px-4 py-2">${p.RUTA || p.ruta}</td>
+              <td class="border px-4 py-2">$${(Number(p.VALOR_BASE || p.valor_base) || 0).toFixed(2)}</td>
+              <td class="border px-4 py-2">$${(Number(p.VALOR_DESCUENTO || p.valor_descuento) || 0).toFixed(2)}</td>
+              <td class="border px-4 py-2">${p.TIPO || p.tipo}</td>
+              <td class="border px-4 py-2">$${(Number(p.VALOR_FINAL || p.valor_final) || 0).toFixed(2)}</td>
+              <td class="border px-4 py-2">
+                <a href="/pasajes/${p.ID || p.id}/edit" class="text-sm text-blue-600 mr-3">Editar</a>
+                <form method="POST" action="/pasajes/${p.ID || p.id}?_method=DELETE" style="display:inline"><button class="text-sm text-red-600">Eliminar</button></form>
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    function applyFilter(){
+      const ruta = document.getElementById('filtroRuta').value;
+      const start = document.getElementById('filtroStart').value;
+      const end = document.getElementById('filtroEnd').value;
+      let url = '/pasajes';
+      const params = [];
+      if (ruta) params.push('ruta=' + encodeURIComponent(ruta));
+      if (start) params.push('start=' + encodeURIComponent(start));
+      if (end) params.push('end=' + encodeURIComponent(end));
+      if (params.length) url += '?' + params.join('&');
+      window.location.href = url;
+    }
+
+    function exportCSV(){
+      const ruta = document.getElementById('filtroRuta').value;
+      const start = document.getElementById('filtroStart').value;
+      const end = document.getElementById('filtroEnd').value;
+      let url = '/pasajes/export';
+      const params = [];
+      if (ruta) params.push('ruta=' + encodeURIComponent(ruta));
+      if (start) params.push('start=' + encodeURIComponent(start));
+      if (end) params.push('end=' + encodeURIComponent(end));
+      if (params.length) url += '?' + params.join('&');
+      window.location.href = url;
+    }
+  </script>
+
+` }) %>

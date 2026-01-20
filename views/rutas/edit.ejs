@@ -1,0 +1,24 @@
+<%- include('../layout', { body: `
+  <div class="bg-white p-6 rounded shadow max-w-2xl mx-auto">
+    <h2 class="text-2xl font-semibold mb-4">Editar Ruta</h2>
+    ${typeof error !== 'undefined' && error ? `<div class="mb-4 p-3 bg-yellow-50 border-l-4 border-yellow-300 text-yellow-800">${error}</div>` : ''}
+    <form method="POST" action="/rutas/${ruta ? (ruta.CODIGO || ruta.codigo) : ''}?_method=PUT" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium">Origen</label>
+        <input name="origen" value="${ruta ? (ruta.ORIGEN || ruta.origen) : ''}" required class="mt-1 block w-full border rounded px-3 py-2" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Destino</label>
+        <input name="destino" value="${ruta ? (ruta.DESTINO || ruta.destino) : ''}" required class="mt-1 block w-full border rounded px-3 py-2" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Precio Base</label>
+        <input name="precio_base" type="number" step="0.01" value="${ruta ? (ruta.PRECIO_BASE || ruta.precio_base) : ''}" required class="mt-1 block w-full border rounded px-3 py-2" />
+      </div>
+      <div class="flex justify-end space-x-2">
+        <a href="/rutas" class="px-4 py-2">Cancelar</a>
+        <button class="bg-blue-600 text-white px-4 py-2 rounded">Guardar cambios</button>
+      </div>
+    </form>
+  </div>
+` }) %>

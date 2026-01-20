@@ -1,0 +1,27 @@
+<%- include('../layout', { body: `
+  <div class="bg-white p-6 rounded shadow max-w-2xl mx-auto">
+    <h2 class="text-2xl font-semibold mb-4">Crear Nueva Ruta</h2>
+    <form method="POST" action="/rutas" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium">Código</label>
+        <input name="codigo" required class="mt-1 block w-full border rounded px-3 py-2" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Origen</label>
+        <input name="origen" required class="mt-1 block w-full border rounded px-3 py-2" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Destino</label>
+        <input name="destino" required class="mt-1 block w-full border rounded px-3 py-2" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Precio Base</label>
+        <input name="precio_base" type="number" step="0.01" required class="mt-1 block w-full border rounded px-3 py-2" />
+      </div>
+      <div class="flex justify-end space-x-2">
+        <a href="/rutas" class="px-4 py-2">Cancelar</a>
+        <button class="bg-blue-600 text-white px-4 py-2 rounded">Crear</button>
+      </div>
+    </form>
+  </div>
+` }) %>

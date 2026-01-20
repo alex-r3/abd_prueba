@@ -1,0 +1,20 @@
+<%- include('../layout', { body: `
+  <div class="bg-white p-6 rounded shadow max-w-2xl mx-auto">
+    <h2 class="text-2xl font-semibold mb-4">Editar Unidad</h2>
+    ${typeof error !== 'undefined' && error ? `<div class="mb-4 p-3 bg-yellow-50 border-l-4 border-yellow-300 text-yellow-800">${error}</div>` : ''}
+    <form method="POST" action="/unidades/${unidad ? (unidad.CODIGO || unidad.codigo) : ''}?_method=PUT" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium">Placa</label>
+        <input name="placa" value="${unidad ? (unidad.PLACA || unidad.placa) : ''}" required class="mt-1 block w-full border rounded px-3 py-2" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Capacidad</label>
+        <input name="capacidad" type="number" value="${unidad ? (unidad.CAPACIDAD || unidad.capacidad) : ''}" required class="mt-1 block w-full border rounded px-3 py-2" />
+      </div>
+      <div class="flex justify-end space-x-2">
+        <a href="/unidades" class="px-4 py-2">Cancelar</a>
+        <button class="bg-blue-600 text-white px-4 py-2 rounded">Guardar cambios</button>
+      </div>
+    </form>
+  </div>
+` }) %>

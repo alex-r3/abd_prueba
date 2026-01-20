@@ -1,0 +1,43 @@
+<%- include('../layout', { body: `
+  <div class="bg-white p-6 rounded shadow">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-semibold">Rutas</h2>
+      <a href="/rutas/new" class="bg-blue-600 text-white px-4 py-2 rounded">Nueva Ruta</a>
+    </div>
+
+    ${dbDown ? `<div class="mb-4 p-3 bg-yellow-50 border-l-4 border-yellow-300 text-yellow-800">Base de datos no disponible — mostrando 0 registros.</div>` : ''}
+
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white">
+        <thead>
+          <tr>
+            <th class="px-4 py-2">Código</th>
+            <th class="px-4 py-2">Origen</th>
+            <th class="px-4 py-2">Destino</th>
+            <th class="px-4 py-2">Precio Base</th>
+            <th class="px-4 py-2">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rutas.length === 0 ? `
+            <tr><td class="px-4 py-6 text-center" colspan="5">No hay rutas registradas.</td></tr>
+          ` : rutas.map(r => `
+            <tr>
+              <td class="border px-4 py-2">${r.CODIGO || r.codigo}</td>
+              <td class="border px-4 py-2">${r.ORIGEN || r.origen}</td>
+              <td class="border px-4 py-2">${r.DESTINO || r.destino}</td>
+              <td class="border px-4 py-2">$${(Number(r.PRECIO_BASE || r.precio_base) || 0).toFixed(2)}</td>
+              <td class="border px-4 py-2">
+                <a href="/rutas/${r.CODIGO || r.codigo}/edit" class="text-sm text-indigo-600 mr-2">Editar</a>
+                <form method="POST" action="/rutas/${r.CODIGO || r.codigo}?_method=DELETE" style="display:inline">
+                  <button class="text-sm text-red-600">Eliminar</button>
+                </form>
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>
+` }) %>
+

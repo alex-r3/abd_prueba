@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Transportes Los Lagos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen">
+    <nav class="bg-white shadow">
+      <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+        <div class="text-xl font-semibold">Transportes Los Lagos</div>
+        <div class="space-x-4">
+          <a href="/" class="text-gray-600 hover:text-gray-900">Inicio</a>
+          <a href="/rutas" class="text-gray-600 hover:text-gray-900">Rutas</a>
+          <a href="/unidades" class="text-gray-600 hover:text-gray-900">Unidades</a>
+          <a href="/tipos" class="text-gray-600 hover:text-gray-900">Tipos Pasaje</a>
+          <a href="/pasajes" class="text-gray-600 hover:text-gray-900">Pasajes</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto p-4">
+      <%- body %>
+    </main>
+
+    <script>
+      function openModal(id){ document.getElementById(id).classList.remove('hidden'); }
+      function closeModal(id){ document.getElementById(id).classList.add('hidden'); }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,19 @@
+<%- include('../layout', { body: `
+  <div class="bg-white p-6 rounded shadow max-w-2xl mx-auto">
+    <h2 class="text-2xl font-semibold mb-4">Crear Nuevo Tipo de Pasaje</h2>
+    <form method="POST" action="/tipos" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium">Descripción</label>
+        <input name="descripcion" required class="mt-1 block w-full border rounded px-3 py-2" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Descuento (%)</label>
+        <input name="descuento_decimal" type="number" min="0" max="100" step="1" required class="mt-1 block w-full border rounded px-3 py-2" placeholder="Ingrese 0-100" />
+      </div>
+      <div class="flex justify-end space-x-2">
+        <a href="/tipos" class="px-4 py-2">Cancelar</a>
+        <button class="bg-blue-600 text-white px-4 py-2 rounded">Crear</button>
+      </div>
+    </form>
+  </div>
+` }) %>

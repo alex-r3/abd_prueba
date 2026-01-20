@@ -1,0 +1,41 @@
+<%- include('../layout', { body: `
+  <div class="bg-white p-6 rounded shadow">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-semibold">Tipos de Pasaje</h2>
+      <a href="/tipos/new" class="bg-blue-600 text-white px-4 py-2 rounded">Nuevo Tipo</a>
+    </div>
+
+    ${dbDown ? `<div class="mb-4 p-3 bg-yellow-50 border-l-4 border-yellow-300 text-yellow-800">Base de datos no disponible — mostrando 0 registros.</div>` : ''}
+
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white">
+        <thead>
+          <tr>
+            <th class="px-4 py-2">ID</th>
+            <th class="px-4 py-2">Descripción</th>
+            <th class="px-4 py-2">Descuento</th>
+            <th class="px-4 py-2">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${tipos.length === 0 ? `
+            <tr><td class="px-4 py-6 text-center" colspan="4">No hay tipos registrados.</td></tr>
+          ` : tipos.map(t => `
+            <tr>
+              <td class="border px-4 py-2">${t.ID || t.id}</td>
+              <td class="border px-4 py-2">${t.DESCRIPCION || t.descripcion}</td>
+              <td class="border px-4 py-2">${((Number(t.DESCUENTO_DECIMAL || t.descuento_decimal) || 0) * 100).toFixed(0)}%</td>
+              <td class="border px-4 py-2">
+                <a href="/tipos/${t.ID || t.id}/edit" class="text-sm text-indigo-600 mr-2">Editar</a>
+                <form method="POST" action="/tipos/${t.ID || t.id}?_method=DELETE" style="display:inline">
+                  <button class="text-sm text-red-600">Eliminar</button>
+                </form>
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>
+` }) %>
+` }) %>

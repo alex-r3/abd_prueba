@@ -1,0 +1,20 @@
+<%- include('../layout', { body: `
+  <div class="bg-white p-6 rounded shadow max-w-2xl mx-auto">
+    <h2 class="text-2xl font-semibold mb-4">Editar Tipo de Pasaje</h2>
+    ${typeof error !== 'undefined' && error ? `<div class="mb-4 p-3 bg-yellow-50 border-l-4 border-yellow-300 text-yellow-800">${error}</div>` : ''}
+    <form method="POST" action="/tipos/${tipo ? (tipo.ID || tipo.id) : ''}?_method=PUT" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium">Descripción</label>
+        <input name="descripcion" value="${tipo ? (tipo.DESCRIPCION || tipo.descripcion) : ''}" required class="mt-1 block w-full border rounded px-3 py-2" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Descuento (%)</label>
+        <input name="descuento_decimal" type="number" min="0" max="100" step="1" value="${tipo ? ((Number(tipo.DESCUENTO_DECIMAL || tipo.descuento_decimal) || 0) * 100).toFixed(0) : ''}" required class="mt-1 block w-full border rounded px-3 py-2" placeholder="Ingrese 0-100" />
+      </div>
+      <div class="flex justify-end space-x-2">
+        <a href="/tipos" class="px-4 py-2">Cancelar</a>
+        <button class="bg-blue-600 text-white px-4 py-2 rounded">Guardar cambios</button>
+      </div>
+    </form>
+  </div>
+` }) %>

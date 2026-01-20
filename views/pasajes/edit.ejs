@@ -1,0 +1,100 @@
+<%- include('../layout', { body: `
+  <div class="bg-white p-6 rounded shadow max-w-2xl mx-auto">
+    <h2 class="text-2xl font-semibold mb-4">Editar Pasaje</h2>
+    <form method="POST" action="/pasajes/${pasaje ? (pasaje.ID||pasaje.id) : ''}" class="space-y-4" id="ventaForm">
+      <input type="hidden" name="id" value="${pasaje ? (pasaje.ID||pasaje.id) : ''}" />
+      <input type="hidden" name="_method" value="PUT" />
+      <div>
+        <label class="block text-sm font-medium">Unidad (placa)</label>
+        <select name="unidad_id" id="unidadSelect" required class="mt-1 block w-full border rounded px-3 py-2">
+          <option value="">Seleccione</option>
+          ${unidades ? unidades.map(u => `<option value="${u.CODIGO||u.codigo}" ${((pasaje && ((pasaje.UNIDAD_ID||pasaje.unidad_id) == (u.CODIGO||u.codigo))) ? 'selected' : '')}>${u.PLACA||u.placa}</option>`).join('') : ''}
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Ruta</label>
+        <select name="ruta_id" id="rutaSelect" required class="mt-1 block w-full border rounded px-3 py-2">
+          <option value="">Seleccione</option>
+          ${rutas ? rutas.map(r => `<option value="${r.CODIGO||r.codigo}" ${((pasaje && ((pasaje.RUTA_ID||pasaje.ruta_id) == (r.CODIGO||r.codigo))) ? 'selected' : '')}>${r.ORIGEN||r.origen} - ${r.DESTINO||r.destino}</option>`).join('') : ''}
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Tipo de Pasaje</label>
+        <select name="tipo_pasaje_id" id="tipoSelect" required class="mt-1 block w-full border rounded px-3 py-2">
+          <option value="">Seleccione</option>
+          ${tipos ? tipos.map(t => `<option value="${t.ID||t.id}" ${((pasaje && ((pasaje.TIPO_PASAJE_ID||pasaje.tipo_pasaje_id) == (t.ID||t.id))) ? 'selected' : '')}>${t.DESCRIPCION||t.descripcion}</option>`).join('') : ''}
+        </select>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div>
+          <label class="block text-sm font-medium">Precio Base</label>
+          <input id="precioBase" disabled class="mt-1 block w-full border rounded px-3 py-2 bg-gray-50" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Descuento</label>
+          <input id="descuentoVal" disabled class="mt-1 block w-full border rounded px-3 py-2 bg-gray-50" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Total</label>
+          <input id="totalVal" disabled class="mt-1 block w-full border rounded px-3 py-2 bg-gray-50" />
+        </div>
+      </div>
+
+      <div class="flex justify-end space-x-2">
+        <a href="/pasajes" class="px-4 py-2">Cancelar</a>
+        <button class="bg-blue-600 text-white px-4 py-2 rounded">Guardar</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const rutasData = ${JSON.stringify(rutas || [])};
+    const tiposData = ${JSON.stringify(tipos || [])};
+
+    function formatMoney(v){
+      if (v === null || v === undefined || v === '') return '$0.00';
+      const num = Number(v);
+      return '$' + (isNaN(num) ? '0.00' : num.toFixed(2));
+    }
+
+    function updateValues(){
+      const rutaCode = document.getElementById('rutaSelect').value;
+      const tipoId = document.getElementById('tipoSelect').value;
+
+      const ruta = rutasData.find(r => (r.CODIGO||r.codigo) == rutaCode);
+      const tipo = tiposData.find(t => (t.ID||t.id) == tipoId);
+
+      const precio = ruta ? (ruta.PRECIO_BASE || ruta.precio_base) : null;
+      const descuentoRate = tipo ? tipo.DESCUENTO_DECIMAL : 0;
+
+      const precioNum = (precio !== undefined && precio !== null) ? Number(precio) : 0;
+      const descuentoNum = precioNum > 0 ? Number(precioNum * Number(descuentoRate)) : 0;
+      const totalNum = precioNum > 0 ? Number(precioNum - descuentoNum) : 0;
+
+      document.getElementById('precioBase').value = formatMoney(precioNum);
+      document.getElementById('descuentoVal').value = formatMoney(descuentoNum);
+      document.getElementById('totalVal').value = formatMoney(totalNum);
+    }
+
+    // set default selections from pasaje if available
+    (function setInitialSelection(){
+      try{
+        const pas = ${JSON.stringify(pasaje || {})};
+        if(pas){
+          const unidadSelect = document.getElementById('unidadSelect');
+          const rutaSelect = document.getElementById('rutaSelect');
+          const tipoSelect = document.getElementById('tipoSelect');
+          if(unidadSelect && (pas.UNIDAD_ID||pas.unidad_id)) unidadSelect.value = (pas.UNIDAD_ID||pas.unidad_id);
+          if(rutaSelect && (pas.RUTA_ID||pas.ruta_id)) rutaSelect.value = (pas.RUTA_ID||pas.ruta_id);
+          if(tipoSelect && (pas.TIPO_PASAJE_ID||pas.tipo_pasaje_id)) tipoSelect.value = (pas.TIPO_PASAJE_ID||pas.tipo_pasaje_id);
+        }
+      }catch(e){/* ignore */}
+      updateValues();
+    })();
+
+    document.getElementById('rutaSelect').addEventListener('change', updateValues);
+    document.getElementById('tipoSelect').addEventListener('change', updateValues);
+  </script>
+
+` }) %>
